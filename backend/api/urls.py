@@ -1,15 +1,18 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 from . import views
+from api.views import CreateUserView
 
 urlpatterns = [
     # Auth (JWT)
-    path('auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
+    
+    path("user/register/", CreateUserView.as_view(), name="register"),
+    path("token/", TokenObtainPairView.as_view(), name="get_token"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="refresh"),
+    path("api-auth/", include("rest_framework.urls")),
     # Categories
     path('categories/', views.CategoryListCreateView.as_view(), name='category_list_create'),
     path('categories/<int:pk>/', views.CategoryDetailView.as_view(), name='category_detail'),
